@@ -24,13 +24,13 @@ states <- read_csv("data/states.csv")
 
 ``` r
 #What are the dimensions of the Denny’s dataset?
-nrow(dennys) #1643 rows
+nrow(dennys) 
 ```
 
     ## [1] 1643
 
 ``` r
-ncol(dennys) #6 columns
+ncol(dennys) 
 ```
 
     ## [1] 6
@@ -68,13 +68,13 @@ glimpse(dennys) #address, city, state, zip, long., lat.
 
 ``` r
 #What are the dimensions of the LaQuinta’s dataset?
-nrow(laquinta) #909 rows
+nrow(laquinta) 
 ```
 
     ## [1] 909
 
 ``` r
-ncol(laquinta) #6 columns
+ncol(laquinta) 
 ```
 
     ## [1] 6
@@ -110,10 +110,84 @@ glimpse(laquinta) #address, city, state, zip, long., lat.
 
 ### Exercise 3
 
+``` r
+#Q: Are there any La Quinta’s locations outside of the US? If so, which countries? What about Denny’s?
+
+#A: There are no Denny's outside of the US, but La Quinta is international. Which was a surprise to me!!
+```
+
 ### Exercise 4
+
+``` r
+#Q: Now take a look at the data. What would be some ways of determining whether or not either establishment has any locations outside the US using just the data (and not the websites).
+
+#A: One way would be to use the state or zip code variables. State seems easier.
+```
 
 ### Exercise 5
 
+``` r
+#Are there any international Dennys?
+#Filter out US locations
+
+intl_dennys <- dennys %>%
+  filter(!(state %in% states$abbreviation))
+
+#There are not.
+```
+
 ### Exercise 6
 
-Add exercise headings as needed.
+``` r
+#Add a country variable to the Denny’s dataset and set all observations equal to "United States."
+dennys <- dennys %>%
+  mutate(country = "United States")
+```
+
+### Exercise 7
+
+``` r
+#Are there any international La Quintas?
+#Filter out US locations
+
+intl_laquinta <- laquinta %>%
+  filter(!(state %in% states$abbreviation))
+
+#There are 14.
+```
+
+### Exercise 8
+
+``` r
+#Add a country variable to the La Quinta dataset. Use the case_when function to populate this variable. 
+
+laquinta <- laquinta %>%
+  mutate(country = case_when(
+    state %in% state.abb ~ "United States",
+    state %in% c("ON", "BC") ~ "Canada",
+    state %in% c("QR", "CH", "NL", "VE", "PU", "SL", "AG") ~ "Mexico",
+    state == "ANT" ~ "Colombia",
+    state == "FM" ~ "Honduras")
+  )
+
+#Going forward we will work with the data from the United States only.
+laquinta <- laquinta %>%
+  filter(country == "United States")
+```
+
+### Exercise 9
+
+``` r
+#Which states have the most and fewest Denny’s locations? 
+
+#What about La Quinta? 
+
+
+#Is this surprising? Why or why not?
+```
+
+### Exercise 10
+
+### Exercise 11
+
+### Exercise 12
