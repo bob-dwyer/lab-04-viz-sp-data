@@ -19,20 +19,37 @@ library(here)
 
 load(here("data", "dennys.rda"))
 load(here("data", "laquinta.rda"))
+states <- read_csv("data/states.csv")
 ```
 
 ### Exercise 1
 
 ```{r exercise1}
+#What are the dimensions of the Denny’s dataset?
+nrow(dennys) #1643 rows
+ncol(dennys) #6 columns
+
+#What does each row in the dataset represent?
+head(dennys) #each row represents a location
 
 
+#What are the variables?
+glimpse(dennys) #address, city, state, zip, long., lat.
 ```
 
 ### Exercise 2
 
 ```{r exercise2}
+#What are the dimensions of the LaQuinta’s dataset?
+nrow(laquinta) #909 rows
+ncol(laquinta) #6 columns
+
+#What does each row in the dataset represent?
+head(laquinta) #each row represents a location
 
 
+#What are the variables?
+glimpse(laquinta) #address, city, state, zip, long., lat.
 ```
 
 ### Exercise 3
