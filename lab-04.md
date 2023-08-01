@@ -178,16 +178,132 @@ laquinta <- laquinta %>%
 ### Exercise 9
 
 ``` r
-#Which states have the most and fewest Denny’s locations? 
+#Q: Which states have the most and fewest Denny’s locations? 
+dennys %>%
+  count(state) %>%
+  inner_join(states, by = c("state" = "abbreviation")) %>%
+  arrange(area)
+```
 
-#What about La Quinta? 
+    ## # A tibble: 51 x 4
+    ##    state     n name                    area
+    ##    <chr> <int> <chr>                  <dbl>
+    ##  1 DC        2 District of Columbia    68.3
+    ##  2 RI        5 Rhode Island          1545. 
+    ##  3 DE        1 Delaware              2489. 
+    ##  4 CT       12 Connecticut           5543. 
+    ##  5 NJ       10 New Jersey            8723. 
+    ##  6 NH        3 New Hampshire         9349. 
+    ##  7 VT        2 Vermont               9616. 
+    ##  8 MA        8 Massachusetts        10554. 
+    ##  9 HI        6 Hawaii               10932. 
+    ## 10 MD       26 Maryland             12406. 
+    ## # i 41 more rows
 
+``` r
+#A: California has the most, DE has the fewest.
 
-#Is this surprising? Why or why not?
+#Q: What about La Quinta? 
+laquinta %>%
+  count(state) %>%
+  inner_join(states, by = c("state" = "abbreviation")) %>%
+  arrange(area)
+```
+
+    ## # A tibble: 48 x 4
+    ##    state     n name             area
+    ##    <chr> <int> <chr>           <dbl>
+    ##  1 RI        2 Rhode Island    1545.
+    ##  2 CT        6 Connecticut     5543.
+    ##  3 NJ        5 New Jersey      8723.
+    ##  4 NH        2 New Hampshire   9349.
+    ##  5 VT        2 Vermont         9616.
+    ##  6 MA        6 Massachusetts  10554.
+    ##  7 MD       13 Maryland       12406.
+    ##  8 WV        3 West Virginia  24230.
+    ##  9 SC        8 South Carolina 32020.
+    ## 10 ME        1 Maine          35380.
+    ## # i 38 more rows
+
+``` r
+#A: Texas has the most, ME has the least.
+
+#Q: Is this surprising? Why or why not? 
+#A: Not really surprising as larger areas tend to have more of both.
 ```
 
 ### Exercise 10
 
-### Exercise 11
+``` r
+#Which states have the most Denny’s locations per thousand square miles? What about La Quinta?
+
+#add an identifier variable before combining data sets
+dennys <- dennys %>%
+  mutate(establishment = "Denny's")
+laquinta <- laquinta %>%
+  mutate(establishment = "La Quinta")
+
+#combine using bind_rows since the datasets have the same # of columns
+dn_lq <- bind_rows(dennys, laquinta)
+
+#We can plot the locations of the two establishments using a scatter plot, and color the points by the establishment type. 
+
+dn_lq %>%
+  ggplot(mapping = aes(x = longitude,
+                       y = latitude,
+                       color = establishment)) +
+  geom_point(alpha = .5) +
+  theme_bw()+
+  labs(title = "Locations of Laquinta and Dennys in US",
+       x = "Longitude",
+       y = "Latitude",
+       color = "Establishment")
+```
+
+![](lab-04_files/figure-gfm/exercise10-1.png)<!-- --> \### Exercise 11
+
+``` r
+#Filter the data for observations in North Carolina only
+dn_lq %>%
+  filter(state == "NC") %>%
+  ggplot(mapping = aes(x = longitude,
+                       y = latitude,
+                       color = establishment)) +
+  geom_point(alpha = .5) +
+  theme_bw()+
+  labs(title = "Locations of Laquinta and Dennys in North Carolina",
+       x = "Longitude",
+       y = "Latitude",
+       color = "Establishment")
+```
+
+![](lab-04_files/figure-gfm/exercise11-1.png)<!-- -->
+
+``` r
+#Q: Visually, does Mitch Hedberg’s joke appear to hold here?
+#A: No.
+```
 
 ### Exercise 12
+
+``` r
+#Filter the data for observations in Texas only
+dn_lq %>%
+  filter(state == "TX") %>%
+  ggplot(mapping = aes(x = longitude,
+                       y = latitude,
+                       color = establishment)) +
+  geom_point(size = 3, alpha = .25) +
+  theme_bw()+
+  labs(title = "Locations of Laquinta and Dennys in Texas",
+       x = "Longitude",
+       y = "Latitude",
+       color = "Establishment")
+```
+
+![](lab-04_files/figure-gfm/exercise12-1.png)<!-- -->
+
+``` r
+#Q: Visually, does Mitch Hedberg’s joke appear to hold here?
+#A: Haha!
+```

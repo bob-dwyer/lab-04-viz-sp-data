@@ -112,22 +112,84 @@ laquinta <- laquinta %>%
 ```
 ### Exercise 9
 ```{r exercise9}
-#Which states have the most and fewest Denny’s locations? 
+#Q: Which states have the most and fewest Denny’s locations? 
+dennys %>%
+  count(state) %>%
+  inner_join(states, by = c("state" = "abbreviation")) %>%
+  arrange(area)
 
-#What about La Quinta? 
+#A: California has the most, DE has the fewest.
 
+#Q: What about La Quinta? 
+laquinta %>%
+  count(state) %>%
+  inner_join(states, by = c("state" = "abbreviation")) %>%
+  arrange(area)
 
-#Is this surprising? Why or why not?
+#A: Texas has the most, ME has the least.
+
+#Q: Is this surprising? Why or why not? 
+#A: Not really surprising as larger areas tend to have more of both.
 ```
 ### Exercise 10
 ```{r exercise10}
+#Which states have the most Denny’s locations per thousand square miles? What about La Quinta?
 
+#add an identifier variable before combining data sets
+dennys <- dennys %>%
+  mutate(establishment = "Denny's")
+laquinta <- laquinta %>%
+  mutate(establishment = "La Quinta")
+
+#combine using bind_rows since the datasets have the same # of columns
+dn_lq <- bind_rows(dennys, laquinta)
+
+#We can plot the locations of the two establishments using a scatter plot, and color the points by the establishment type. 
+
+dn_lq %>%
+  ggplot(mapping = aes(x = longitude,
+                       y = latitude,
+                       color = establishment)) +
+  geom_point(alpha = .5) +
+  theme_bw()+
+  labs(title = "Locations of Laquinta and Dennys in US",
+       x = "Longitude",
+       y = "Latitude",
+       color = "Establishment")
 ```
 ### Exercise 11
 ```{r exercise11}
+#Filter the data for observations in North Carolina only
+dn_lq %>%
+  filter(state == "NC") %>%
+  ggplot(mapping = aes(x = longitude,
+                       y = latitude,
+                       color = establishment)) +
+  geom_point(alpha = .5) +
+  theme_bw()+
+  labs(title = "Locations of Laquinta and Dennys in North Carolina",
+       x = "Longitude",
+       y = "Latitude",
+       color = "Establishment")
 
+#Q: Visually, does Mitch Hedberg’s joke appear to hold here?
+#A: No.
 ```
 ### Exercise 12
 ```{r exercise12}
+#Filter the data for observations in Texas only
+dn_lq %>%
+  filter(state == "TX") %>%
+  ggplot(mapping = aes(x = longitude,
+                       y = latitude,
+                       color = establishment)) +
+  geom_point(size = 3, alpha = .25) +
+  theme_bw()+
+  labs(title = "Locations of Laquinta and Dennys in Texas",
+       x = "Longitude",
+       y = "Latitude",
+       color = "Establishment")
 
+#Q: Visually, does Mitch Hedberg’s joke appear to hold here?
+#A: Haha!
 ```
